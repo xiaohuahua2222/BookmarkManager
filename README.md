@@ -11,14 +11,18 @@
 ## 快速开始
 
 ```bash
-# 方式一：docker compose（在本目录执行）
-docker compose up -d
-
-# 方式二：docker run
-docker run -d --name bookmarkmanager \
-  -p 3080:3080 \
-  -v "$PWD/bm-data:/data" \
-  bookmarkmanager:latest
+services:
+  webapi:
+    image: bing37/bookmarkmanager-bb:latest   
+    container_name: bookmarkmanager-bb
+    pull_policy: always        # 每次 up/start 都去远程拉最新
+    user: "1000:1000"
+    ports:
+      - "8888:3080"          
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+  
 ```
 
 访问 `http://localhost:3080` → 首次进入**初始化向导**创建管理员账号即可。
